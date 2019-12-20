@@ -44,6 +44,7 @@ getMap <- function(
   sf,
   variable,
   title,
+  city = "",
   proj = crs,
   n = 7,
   vals = "whole",
@@ -79,9 +80,14 @@ getMap <- function(
     legendFormat = list(digits = 0)
     legendTitle = paste(geography, acsYear, sep = ", ")
   }
+  boundingBox <- if (city %in% c("Normal", "Bloomington")) {
+    subset(foregroundLayer, NAME == city)
+  } else {
+    foregroundLayer
+  }
   map <- tmap::tm_shape(
     backgroundLayer,
-    bbox = foregroundLayer,
+    bbox = boundingBox,
     projection = proj,
     unit = "mi"
   ) +
@@ -93,7 +99,8 @@ getMap <- function(
       n = n,
       style = classificationStyle,
       title = legendTitle,
-      palette = palette
+      palette = palette,
+      contrast = c(0.3, 0.7)
     ) +
     tmap::tm_borders(col = "grey50", lwd = .5) +
     tmap::tm_shape(foregroundLayer) +
@@ -128,12 +135,16 @@ getMap <- function(
   map
 }
 
-
+#median housing values
+medianHousingValueMapVariable <- "medianHousingValue"
+medianHousingValueMapTitle <- "Median Housing Value"
+medianHousingValueMapPalette <- "YlOrRd"
 medianHousingValueMap <- getMap(
   tractLayer,
-  variable = "medianHousingValue",
-  title = "Median Housing Value",
-  vals = "dollars"
+  variable = medianHousingValueMapVariable,
+  title = medianHousingValueMapTitle,
+  vals = "dollars",
+  palette = medianHousingValueMapPalette
 ) %T>%
   tmap::tmap_save(
     filename = paste(
@@ -147,7 +158,8 @@ medianGrossRentMap <- getMap(
   tractLayer,
   variable = "medianGrossRent",
   title = "Median Gross Rent",
-  vals = "dollars"
+  vals = "dollars",
+  palette = "YlOrRd"
 ) %T>%
   tmap::tmap_save(
     filename = paste(
@@ -161,7 +173,8 @@ percentWhiteMap <- getMap(
   tractLayer,
   variable = "percent_white",
   title = "Percent White",
-  vals = "percent"
+  vals = "percent",
+  palette = "Oranges"
 ) %T>%
   tmap::tmap_save(
     filename = paste(
@@ -175,7 +188,8 @@ percentBlackMap <- getMap(
   tractLayer,
   variable = "percent_black",
   title = "Percent Black",
-  vals = "percent"
+  vals = "percent",
+  palette = "Greens"
 ) %T>%
   tmap::tmap_save(
     filename = paste(
@@ -189,7 +203,8 @@ percentAsianMap <- getMap(
   tractLayer,
   variable = "percent_asian",
   title = "Percent Asian",
-  vals = "percent"
+  vals = "percent",
+  palette = "Blues"
 ) %T>%
   tmap::tmap_save(
     filename = paste(
@@ -203,7 +218,8 @@ percentHispanicMap <- getMap(
   tractLayer,
   variable = "percent_hispanic",
   title = "Percent Hispanic",
-  vals = "percent"
+  vals = "percent",
+  palette = "Purples"
 ) %T>%
   tmap::tmap_save(
     filename = paste(
@@ -212,12 +228,10 @@ percentHispanicMap <- getMap(
       sep = "/"
     )
   )
-
-
-estimate_renterOccupied
-estimate_belowPoverty
-estimate_occupiedUnits4orMore
-estimate_occupiedUnitsPre1960
-denominator_renterOccupied
-denominator_belowPoverty
-denominator_occupiedUnits
+# estimate_renterOccupied
+# estimate_belowPoverty
+# estimate_occupiedUnits4orMore
+# estimate_occupiedUnitsPre1960
+# denominator_renterOccupied
+# denominator_belowPoverty
+# denominator_occupiedUnits
