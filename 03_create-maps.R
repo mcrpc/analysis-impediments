@@ -46,7 +46,7 @@ getMap <- function(
   title,
   city = "",
   proj = crs,
-  n = 7,
+  n = 5,
   vals = "whole",
   classificationStyle = "jenks",
   palette = "seq",
@@ -85,6 +85,7 @@ getMap <- function(
   } else {
     foregroundLayer
   }
+  
   map <- tmap::tm_shape(
     backgroundLayer,
     bbox = boundingBox,
@@ -99,6 +100,7 @@ getMap <- function(
       n = n,
       style = classificationStyle,
       title = legendTitle,
+      # legend.is.portrait = FALSE,
       palette = palette,
       contrast = c(0.3, 0.7)
     ) +
@@ -111,127 +113,216 @@ getMap <- function(
       shadow = T
     ) +
     tmap::tm_layout(
-      legend.position = c("left", "top"),
       legend.title.size = 1.1,
       legend.title.fontface = "bold",
+      legend.position = c("left", "top"),
+      legend.bg.color = "white",
+      legend.bg.alpha = .7,
       title = title,
+      title.bg.color = "white",
+      title.bg.alpha = .7,
       title.size = 1.2,
       title.fontface = "bold",
       fontfamily = "sans",
       legend.format = legendFormat,
       frame.lwd = 2,
-      outer.bg.color = "#00000000",
+      outer.bg.color = "#00000000"
     ) +
     tmap::tm_scale_bar(
-      width = 0.25,
+      width = 0.2,
       text.size = .5
     ) +
     tmap::tm_credits(
       text = getACSYearsLabel(acsYear),
       size = .5,
       bg.color = "white",
-      bg.alpha = .5
+      bg.alpha = .7
     )
   map
 }
 
-#median housing values
+#test map
+getMap(
+  tractLayer,
+  city = "Bloomington",
+  variable = "medianGrossRent",
+  title = "Median Gross Rent",
+  vals = "dollars",
+  palette = "YlOrRd"
+)
+
+# median housing value
 medianHousingValueMapVariable <- "medianHousingValue"
 medianHousingValueMapTitle <- "Median Housing Value"
-medianHousingValueMapPalette <- "YlOrRd"
-medianHousingValueMap <- getMap(
+medianHousingValueMapPalette <- "Reds"
+# median housing value - bloomington
+bloomington_medianHousingValueMap <- getMap(
   tractLayer,
   variable = medianHousingValueMapVariable,
   title = medianHousingValueMapTitle,
+  city = "Bloomington",
   vals = "dollars",
   palette = medianHousingValueMapPalette
 ) %T>%
   tmap::tmap_save(
     filename = paste(
       mapDirectory,
-      addACSYearsToFilename("Tract_Median-Housing-Value.pdf", acsYear),
+      addACSYearsToFilename("COB-Tract_Median-Housing-Value.pdf", acsYear),
       sep = "/"
     )
   )
-
-medianGrossRentMap <- getMap(
+# median housing value - normal
+normal_medianHousingValueMap <- getMap(
   tractLayer,
-  variable = "medianGrossRent",
-  title = "Median Gross Rent",
+  variable = medianHousingValueMapVariable,
+  title = medianHousingValueMapTitle,
+  city = "Normal",
   vals = "dollars",
-  palette = "YlOrRd"
+  palette = medianHousingValueMapPalette
 ) %T>%
   tmap::tmap_save(
     filename = paste(
       mapDirectory,
-      addACSYearsToFilename("Tract_Median-Gross-Rent.pdf", acsYear),
+      addACSYearsToFilename("TON-Tract_Median-Housing-Value.pdf", acsYear),
       sep = "/"
     )
   )
 
-percentWhiteMap <- getMap(
+# median gross rent
+medianGrossRentVariable <- "medianGrossRent"
+medianGrossRentTitle <- "Median Gross Rent"
+medianGrossRentPalette <- "YlOrRd"
+# median gross rent - bloomington
+bloomington_medianGrossRentMap <- getMap(
   tractLayer,
-  variable = "percent_white",
-  title = "Percent White",
-  vals = "percent",
-  palette = "Oranges"
+  city = "Bloomington",
+  variable = medianGrossRentVariable,
+  title = medianGrossRentTitle,
+  vals = "dollars",
+  palette = medianGrossRentPalette
 ) %T>%
   tmap::tmap_save(
     filename = paste(
       mapDirectory,
-      addACSYearsToFilename("Tract_Percent-White.pdf", acsYear),
+      addACSYearsToFilename("COB-Tract_Median-Gross-Rent.pdf", acsYear),
+      sep = "/"
+    )
+  )
+# median gross rent - normal
+normal_medianGrossRentMap <- getMap(
+  tractLayer,
+  city = "Normal",
+  variable = medianGrossRentVariable,
+  title = medianGrossRentTitle,
+  vals = "dollars",
+  palette = medianGrossRentPalette
+) %T>%
+  tmap::tmap_save(
+    filename = paste(
+      mapDirectory,
+      addACSYearsToFilename("TON-Tract_Median-Gross-Rent.pdf", acsYear),
       sep = "/"
     )
   )
 
-percentBlackMap <- getMap(
+# percent white
+percentWhiteVariable <- "percent_white"
+percentWhiteTitle <- "Percent White"
+percentWhitePalette <- "Blues"
+# percent white - bloomington
+bloomington_percentWhiteMap <- getMap(
   tractLayer,
-  variable = "percent_black",
-  title = "Percent Black",
+  city = "Bloomington",
+  variable = percentWhiteVariable,
+  title = percentWhiteTitle,
   vals = "percent",
-  palette = "Greens"
+  palette = percentWhitePalette
 ) %T>%
   tmap::tmap_save(
     filename = paste(
       mapDirectory,
-      addACSYearsToFilename("Tract_Percent-Black.pdf", acsYear),
+      addACSYearsToFilename("COB-Tract_Percent-White.pdf", acsYear),
       sep = "/"
     )
   )
+# percent white - normal
 
-percentAsianMap <- getMap(
-  tractLayer,
-  variable = "percent_asian",
-  title = "Percent Asian",
-  vals = "percent",
-  palette = "Blues"
-) %T>%
-  tmap::tmap_save(
-    filename = paste(
-      mapDirectory,
-      addACSYearsToFilename("Tract_Percent-Asian.pdf", acsYear),
-      sep = "/"
-    )
-  )
 
-percentHispanicMap <- getMap(
+# percent black
+percentBlackVariable <- "percent_black"
+percentBlackTitle <- "Percent Black"
+percentBlackPalette <- "Blues"
+# percent black - bloomington
+bloomington_percentBlackMap <- getMap(
   tractLayer,
-  variable = "percent_hispanic",
-  title = "Percent Hispanic",
+  city = "Bloomington",
+  variable = percentBlackVariable,
+  title = percentBlackTitle,
   vals = "percent",
-  palette = "Purples"
+  palette = percentBlackPalette
 ) %T>%
   tmap::tmap_save(
     filename = paste(
       mapDirectory,
-      addACSYearsToFilename("Tract_Percent-Hispanic.pdf", acsYear),
+      addACSYearsToFilename("COB-Tract_Percent-Black.pdf", acsYear),
       sep = "/"
     )
   )
-# estimate_renterOccupied
-# estimate_belowPoverty
-# estimate_occupiedUnits4orMore
-# estimate_occupiedUnitsPre1960
-# denominator_renterOccupied
-# denominator_belowPoverty
-# denominator_occupiedUnits
+# percent black - normal
+
+# percent asian
+percentAsianVariable <- "percent_asian"
+percentAsianTitle <- "Percent Asian"
+percentAsianPalette <- "Blues"
+# percent asian - bloomington
+bloomington_percentAsianMap <- getMap(
+  tractLayer,
+  city = "Bloomington",
+  variable = percentAsianVariable,
+  title = percentAsianTitle,
+  vals = "percent",
+  palette = percentAsianPalette
+) %T>%
+  tmap::tmap_save(
+    filename = paste(
+      mapDirectory,
+      addACSYearsToFilename("COB-Tract_Percent-Asian.pdf", acsYear),
+      sep = "/"
+    )
+  )
+# percent asian - normal
+
+# percent hispanic
+percentHispanicVariable <- "percent_hispanic"
+percentHispanicTitle <- "Percent Hispanic"
+percentHispanicPalette <- "Blues"
+# percent hispanic - bloomington
+bloomington_percentHispanicMap <- getMap(
+  tractLayer,
+  city = "Bloomington",
+  variable = percentHispanicVariable,
+  title = percentHispanicTitle,
+  vals = "percent",
+  palette = percentHispanicPalette
+) %T>%
+  tmap::tmap_save(
+    filename = paste(
+      mapDirectory,
+      addACSYearsToFilename("COB-Tract_Percent-Hispanic.pdf", acsYear),
+      sep = "/"
+    )
+  )
+# percent hispanic - normal
+
+# percent renter occupied
+# percent renter occupied - bloomington
+# percent renter occupied - normal
+# percent below poverty
+# percent below poverty - bloomington
+# percent below poverty - normal
+# percent housing 4 units or more
+# percent housing 4 units or more - bloomington
+# percent housing 4 units or more - normal
+# percent housing pre 1960
+# percent housing pre 1960 - bloomington
+# percent housing pre 1960 - normal
