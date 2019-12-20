@@ -31,5 +31,9 @@ analysisMapData <- acsDataTibble %>%
     percent_black = rowSums(.[names(.) %in% percent_black]),
     percent_asian = rowSums(.[names(.) %in% percent_asian]),
     percent_hispanic = rowSums(.[names(.) %in% percent_hispanic]),
+    percent_occupiedUnits4orMore = estimate_occupiedUnits4orMore / denominator_occupiedUnits * 100,
+    percent_occupiedUnitsPre1960 = estimate_occupiedUnitsPre1960 / denominator_occupiedUnits * 100,
+    percent_renterOccupied = estimate_renterOccupied / denominator_renterOccupied * 100,
+    percent_belowPoverty = estimate_belowPoverty / denominator_belowPoverty * 100
   )
 
