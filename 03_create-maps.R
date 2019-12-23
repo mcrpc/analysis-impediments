@@ -80,7 +80,7 @@ getMap <- function(
     legendFormat = list(digits = 0)
     legendTitle = paste(geography, acsYear, sep = ", ")
   }
-  boundingBox <- if (city %in% c("Normal", "Bloomington")) {
+  focusCityLayer <- if (city %in% c("Normal", "Bloomington")) {
     subset(foregroundLayer, NAME == city)
   } else {
     foregroundLayer
@@ -88,7 +88,7 @@ getMap <- function(
   
   map <- tmap::tm_shape(
     backgroundLayer,
-    bbox = boundingBox,
+    bbox = focusCityLayer,
     projection = proj,
     unit = "mi"
   ) +
@@ -104,14 +104,17 @@ getMap <- function(
       palette = palette,
       contrast = c(0.3, 0.7)
     ) +
-    tmap::tm_borders(col = "grey50", lwd = .5) +
+    tmap::tm_borders(col = "grey90", lwd = .75, alpha = .7) +
     tmap::tm_shape(foregroundLayer) +
-    tmap::tm_borders(col = "black", lwd = 2) +
+    tmap::tm_borders(col = "grey30", lwd = 1.2, alpha = .9) +
     tmap::tm_text(
       text = "NAME",
-      size = 1,
-      shadow = T
+      size = 1.1,
+      shadow = T,
+      case = "upper",
     ) +
+    tmap::tm_shape(focusCityLayer) +
+    tmap::tm_borders(col = "grey10", lwd = 1.8) +
     tmap::tm_layout(
       legend.title.size = 1.1,
       legend.title.fontface = "bold",
@@ -169,7 +172,9 @@ bloomington_medianHousingValueMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("COB-Tract_Median-Housing-Value.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # median housing value - normal
 normal_medianHousingValueMap <- getMap(
@@ -185,7 +190,9 @@ normal_medianHousingValueMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("TON-Tract_Median-Housing-Value.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 
 # median gross rent
@@ -206,7 +213,9 @@ bloomington_medianGrossRentMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("COB-Tract_Median-Gross-Rent.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # median gross rent - normal
 normal_medianGrossRentMap <- getMap(
@@ -222,7 +231,9 @@ normal_medianGrossRentMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("TON-Tract_Median-Gross-Rent.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 
 # percent white
@@ -243,7 +254,9 @@ bloomington_percentWhiteMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("COB-Tract_Percent-White.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # percent white - normal
 normal_percentWhiteMap <- getMap(
@@ -259,7 +272,9 @@ normal_percentWhiteMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("TON-Tract_Percent-White.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 
 # percent black
@@ -280,7 +295,9 @@ bloomington_percentBlackMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("COB-Tract_Percent-Black.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # percent black - normal
 normal_percentBlackMap <- getMap(
@@ -296,7 +313,9 @@ normal_percentBlackMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("TON-Tract_Percent-Black.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # percent asian
 percentAsianVariable <- "percent_asian"
@@ -316,7 +335,9 @@ bloomington_percentAsianMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("COB-Tract_Percent-Asian.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # percent asian - normal
 normal_percentAsianMap <- getMap(
@@ -332,7 +353,9 @@ normal_percentAsianMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("TON-Tract_Percent-Asian.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # percent hispanic
 percentHispanicVariable <- "percent_hispanic"
@@ -352,7 +375,9 @@ bloomington_percentHispanicMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("COB-Tract_Percent-Hispanic.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # percent hispanic - normal
 normal_percentHispanicMap <- getMap(
@@ -368,7 +393,9 @@ normal_percentHispanicMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("TON-Tract_Percent-Hispanic.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # percent renter occupied
 percentRenterOccupiedVariable <- "percent_renterOccupied"
@@ -388,7 +415,9 @@ bloomington_percentRenterOccupiedMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("COB-Tract_Percent-Renter-Occupied.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # percent renter occupied - normal
 normal_percentRenterOccupiedMap <- getMap(
@@ -404,7 +433,9 @@ normal_percentRenterOccupiedMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("TON-Tract_Percent-Renter-Occupied.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # percent below poverty
 percentBelowPovertyVariable <- "estimate_belowPoverty"
@@ -424,7 +455,9 @@ bloomington_percentBelowPovertyMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("COB-Tract_Percent-Below-Poverty.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # percent below poverty - normal
 normal_percentBelowPovertyMap <- getMap(
@@ -440,7 +473,9 @@ normal_percentBelowPovertyMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("TON-Tract_Percent-Below-Poverty.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # percent housing 4 bedrooms or more
 percentOccupiedUnits4orMoreVariable <- "estimate_occupiedUnits4orMore"
@@ -460,7 +495,9 @@ bloomington_percentOccupiedUnits4orMoreMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("COB-Tract_Percent-4-Plus-Bedrooms.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # percent housing 4 bedrooms or more - normal
 normal_percentOccupiedUnits4orMoreMap <- getMap(
@@ -476,7 +513,9 @@ normal_percentOccupiedUnits4orMoreMap <- getMap(
       mapDirectory,
       addACSYearsToFilename("TON-Tract_Percent-4-Plus-Bedrooms.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # percent housing pre 1960
 percentOccupiedUnitsPre1960Variable <- "estimate_occupiedUnitsPre1960"
@@ -496,7 +535,9 @@ bloomington_percentOccupiedUnitsPre1960Map <- getMap(
       mapDirectory,
       addACSYearsToFilename("COB-Tract_Percent-Housing-Pre-1960.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
 # percent housing pre 1960 - normal
 normal_percentOccupiedUnitsPre1960Map <- getMap(
@@ -512,5 +553,7 @@ normal_percentOccupiedUnitsPre1960Map <- getMap(
       mapDirectory,
       addACSYearsToFilename("TON-Tract_Percent-Housing-Pre-1960.pdf", acsYear),
       sep = "/"
-    )
+    ),
+    width = 8.5,
+    height = 5.5
   )
