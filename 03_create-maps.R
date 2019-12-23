@@ -80,11 +80,8 @@ getMap <- function(
     legendFormat = list(digits = 0)
     legendTitle = paste(geography, acsYear, sep = ", ")
   }
-  focusCityLayer <- if (city %in% c("Normal", "Bloomington")) {
-    subset(foregroundLayer, NAME == city)
-  } else {
-    foregroundLayer
-  }
+  focusCityLayer <- subset(foregroundLayer, NAME == city)
+  otherCityLayer <- subset(foregroundLayer, NAME != city)
   
   map <- tmap::tm_shape(
     backgroundLayer,
@@ -104,17 +101,20 @@ getMap <- function(
       palette = palette,
       contrast = c(0.3, 0.7)
     ) +
-    tmap::tm_borders(col = "grey90", lwd = .75, alpha = .7) +
+    tmap::tm_borders(col = "grey90", lwd = 1, alpha = .6) +
     tmap::tm_shape(foregroundLayer) +
-    tmap::tm_borders(col = "grey30", lwd = 1.2, alpha = .9) +
     tmap::tm_text(
       text = "NAME",
       size = 1.1,
       shadow = T,
       case = "upper",
     ) +
+    tmap::tm_shape(otherCityLayer) +
+    tmap::tm_borders(col = "grey50", lwd = 1, lty = 2, alpha = .7) +
     tmap::tm_shape(focusCityLayer) +
-    tmap::tm_borders(col = "grey10", lwd = 1.8) +
+    tmap::tm_borders(col = "white", lwd = 4, alpha = .3) + # going for a highlight-y 'glow' effect
+    tmap::tm_shape(focusCityLayer) +
+    tmap::tm_borders(col = "grey10", lwd = 1.8, lty = 2, alpha = .9) +
     tmap::tm_layout(
       legend.title.size = 1.1,
       legend.title.fontface = "bold",
@@ -438,7 +438,7 @@ normal_percentRenterOccupiedMap <- getMap(
     height = 5.5
   )
 # percent below poverty
-percentBelowPovertyVariable <- "estimate_belowPoverty"
+percentBelowPovertyVariable <- "percent_belowPoverty"
 percentBelowPovertyTitle <- "Percent Annual Income under Poverty"
 percentBelowPovertyPalette <- "Greens"
 # percent below poverty - bloomington
@@ -478,7 +478,7 @@ normal_percentBelowPovertyMap <- getMap(
     height = 5.5
   )
 # percent housing 4 bedrooms or more
-percentOccupiedUnits4orMoreVariable <- "estimate_occupiedUnits4orMore"
+percentOccupiedUnits4orMoreVariable <- "percent_occupiedUnits4orMore"
 percentOccupiedUnits4orMoreTitle <- "Percent 4 or more bedrooms"
 percentOccupiedUnits4orMorePalette <- "Greens"
 # percent housing 4 bedrooms or more - bloomington
@@ -518,7 +518,7 @@ normal_percentOccupiedUnits4orMoreMap <- getMap(
     height = 5.5
   )
 # percent housing pre 1960
-percentOccupiedUnitsPre1960Variable <- "estimate_occupiedUnitsPre1960"
+percentOccupiedUnitsPre1960Variable <- "percent_occupiedUnitsPre1960"
 percentOccupiedUnitsPre1960Title <- "Percent Housing Units Built Before 1960"
 percentOccupiedUnitsPre1960Palette <- "Greens"
 # percent housing pre 1960 - bloomington
