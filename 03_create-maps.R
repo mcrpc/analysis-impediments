@@ -110,11 +110,9 @@ getMap <- function(
       case = "upper",
     ) +
     tmap::tm_shape(otherCityLayer) +
-    tmap::tm_borders(col = "grey50", lwd = 1, lty = 2, alpha = .7) +
+    tmap::tm_borders(col = "grey50", lwd = 1, alpha = .8) +
     tmap::tm_shape(focusCityLayer) +
-    tmap::tm_borders(col = "white", lwd = 4, alpha = .3) + # going for a highlight-y 'glow' effect
-    tmap::tm_shape(focusCityLayer) +
-    tmap::tm_borders(col = "grey10", lwd = 1.8, lty = 2, alpha = .9) +
+    tmap::tm_borders(col = "grey20", lwd = 4, alpha = .8) +
     tmap::tm_layout(
       legend.title.size = 1.1,
       legend.title.fontface = "bold",
